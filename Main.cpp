@@ -42,18 +42,18 @@ void main(int argc, char* argv[])
 		WSACleanup();
 		return;
 	}
-	char googBuffer[80];
-	int socketResult;
-	send(connectSocket, "GET / HTTP/1.1 www.google.com", static_cast<int>(strlen("GET / HTTP/1.1 www.google.com")), 0);
+	char googBuffer[80] = "";
+	auto socketResultSize = 50;
+	send(connectSocket, "GET /www.theobig.com HTTP/1.1", static_cast<int>(strlen("GET /www.google.com HTTP/1.1")), 0);
 	do
 	{
-		socketResult = recv(connectSocket, googBuffer, 50, 0);
-		if (SOCKET_ERROR == socketResult)
+		socketResultSize = recv(connectSocket, googBuffer, socketResultSize, 0);
+		if (socketResultSize != SOCKET_ERROR)
 		{
 			closesocket(connectSocket);
 			WSACleanup();
 			return;
 		}
-	} while (socketResult);
+	} while (socketResultSize == 50);
 	cout << googBuffer << "\r\n";
 }
